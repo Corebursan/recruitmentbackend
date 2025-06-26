@@ -1,14 +1,29 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import axios from '../api/axiosInstance';
 
-const Login = () => {
+const Login = ({ setUser }) => {
+  const navigate = useNavigate();
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
-    // 👉 Call API here later
-    console.log('Login:', { email, password });
+
+    try {
+      // 1. Login API call
+      await axios.post('/auth/login', { email, password });
+
+      // 2. Get user info after successful login
+      const res = await axios.get('/auth/current-user');
+      setUser(res.data); // ✅ update parent state
+
+      // 3. Redirect to homepage
+      navigate('/');
+    } catch (err) {
+      alert(err.response?.data || 'Login failed');
+    }
   };
 
   return (

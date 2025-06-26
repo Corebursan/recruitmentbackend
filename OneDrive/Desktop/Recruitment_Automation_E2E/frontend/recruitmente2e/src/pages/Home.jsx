@@ -1,10 +1,18 @@
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import axios from '../api/axiosInstance';
+
 const Home = () => {
-  return (
-    <div className="p-6">
-      <h1 className="text-2xl font-bold mb-4">Welcome to Job Automation Platform</h1>
-      <p>This platform helps automate job intake, JD generation, and more.</p>
-    </div>
-  );
+  const [user, setUser] = useState(null);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    axios.get('/auth/current-user')
+      .then(res => setUser(res.data))
+      .catch(() => navigate('/login'));
+  }, []);
+
+  return user ? <h1>Welcome, {user.name}!</h1> : null;
 };
 
 export default Home;
