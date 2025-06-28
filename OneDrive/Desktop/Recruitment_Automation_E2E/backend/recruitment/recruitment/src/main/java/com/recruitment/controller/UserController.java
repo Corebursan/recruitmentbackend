@@ -1,5 +1,6 @@
 package com.recruitment.controller;
 
+
 import com.recruitment.entity.User;
 import com.recruitment.repository.UserRepo;
 import jakarta.servlet.http.HttpSession;
@@ -10,8 +11,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/auth")
-@CrossOrigin(origins = "http://localhost:5174", allowCredentials = "true")
+@RequestMapping("/auth/user")
+@CrossOrigin(origins = "http://localhost:5173", allowCredentials = "true")
 public class UserController {
 
     @Autowired
@@ -27,10 +28,13 @@ public class UserController {
         return ResponseEntity.ok("User registered successfully");
     }
 
-    // ✅ Login existing user and store in session
+    // ✅ Login user
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody User user, HttpSession session) {
+    	
+    	System.out.println("login is triggered");
         Optional<User> optionalUser = repo.findByEmail(user.getEmail());
+
         if (optionalUser.isEmpty()) {
             return ResponseEntity.status(401).body("User not found");
         }
@@ -54,7 +58,7 @@ public class UserController {
         return ResponseEntity.ok(user);
     }
 
-    // ✅ Logout the user
+    // ✅ Logout
     @PostMapping("/logout")
     public ResponseEntity<?> logout(HttpSession session) {
         session.invalidate();

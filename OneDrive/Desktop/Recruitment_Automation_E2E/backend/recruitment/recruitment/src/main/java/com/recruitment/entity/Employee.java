@@ -1,32 +1,30 @@
 package com.recruitment.entity;
 
-
-
-
-
-import jakarta.persistence.*;
-
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
 @Entity
-public class User {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+@Table(name = "employees")
+public class Employee {
+	
+	@Id @GeneratedValue
     private Long id;
-
+	private String empId;
     private String name;
     private String email;
     private String password;
-    private String role = "user"; // default role
-	public User(Long id, String name, String email, String password, String role) {
+	public Employee(Long id, String empId, String name, String email, String password) {
 		super();
 		this.id = id;
+		this.empId = empId;
 		this.name = name;
 		this.email = email;
 		this.password = password;
-		this.role = role;
 	}
     
-    public User() {
+    public Employee() {
     	
     }
 
@@ -36,6 +34,14 @@ public class User {
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	public String getEmpId() {
+		return empId;
+	}
+
+	public void setEmpId(String empId) {
+		this.empId = empId;
 	}
 
 	public String getName() {
@@ -61,14 +67,7 @@ public class User {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-
-	public String getRole() {
-		return role;
-	}
-
-	public void setRole(String role) {
-		this.role = role;
-	}
     
     
+
 }
