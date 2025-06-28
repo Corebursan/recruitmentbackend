@@ -7,19 +7,17 @@ const Login = ({ setUser }) => {
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleLogin = async (e) => {
     e.preventDefault();
 
     try {
-      // 1. Login API call
-      await axios.post('/auth/login', { email, password });
+      await axios.post('/auth/user/login', { email, password });
 
-      // 2. Get user info after successful login
-      const res = await axios.get('/auth/current-user');
-      setUser(res.data); // ✅ update parent state
+      const res = await axios.get('/auth/user/current-user');
+      setUser(res.data);
 
-      // 3. Redirect to homepage
       navigate('/');
     } catch (err) {
       alert(err.response?.data || 'Login failed');
@@ -30,7 +28,7 @@ const Login = ({ setUser }) => {
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-purple-600 via-blue-600 to-indigo-700 px-4">
       <div className="bg-white rounded-2xl shadow-lg p-8 w-full max-w-md">
         <h2 className="text-2xl font-bold text-center text-blue-700 mb-6">
-          Login to Recruitment_E2E
+          Login to Recruitment_E2E as User
         </h2>
 
         <form onSubmit={handleLogin} className="space-y-4">
@@ -48,14 +46,23 @@ const Login = ({ setUser }) => {
 
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">Password</label>
-            <input
-              type="password"
-              required
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 outline-none"
-              placeholder="Enter your password"
-            />
+            <div className="relative">
+              <input
+                type={showPassword ? 'text' : 'password'}
+                required
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 outline-none pr-10"
+                placeholder="Enter your password"
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword((prev) => !prev)}
+                className="absolute inset-y-0 right-0 px-3 text-gray-500 hover:text-gray-700 focus:outline-none"
+              >
+                {showPassword ? '🙈' : '👁️'}
+              </button>
+            </div>
           </div>
 
           <button
