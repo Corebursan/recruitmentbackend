@@ -25,60 +25,67 @@ const Login = ({ setUser }) => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-purple-600 via-blue-600 to-indigo-700 px-4">
-      <div className="bg-white rounded-2xl shadow-lg p-8 w-full max-w-md">
-        <h2 className="text-2xl font-bold text-center text-blue-700 mb-6">
-          Login to Recruitment_E2E as User
-        </h2>
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-600 via-purple-600 to-blue-600 px-4 py-12">
+      <div className="bg-white shadow-xl rounded-3xl overflow-hidden w-full max-w-md">
+        <div className="bg-blue-700 text-white py-6 px-6 text-center">
+          <h2 className="text-3xl font-extrabold mb-1">Welcome Back!</h2>
+          <p className="text-sm text-blue-100">Let’s get you started on your recruitment journey</p>
+        </div>
 
-        <form onSubmit={handleLogin} className="space-y-4">
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
-            <input
-              type="email"
-              required
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 outline-none"
-              placeholder="Enter your email"
-            />
-          </div>
+        <div className="p-8">
+          <h3 className="text-xl font-semibold text-gray-800 text-center mb-6">
+            Login as <span className="text-blue-700">Job Seeker</span>
+          </h3>
 
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Password</label>
-            <div className="relative">
+          <form onSubmit={handleLogin} className="space-y-5">
+            <div>
+              <label className="block text-sm font-medium text-gray-600 mb-1">Email</label>
               <input
-                type={showPassword ? 'text' : 'password'}
+                type="email"
                 required
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 outline-none pr-10"
-                placeholder="Enter your password"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                placeholder="Enter your email"
               />
-              <button
-                type="button"
-                onClick={() => setShowPassword((prev) => !prev)}
-                className="absolute inset-y-0 right-0 px-3 text-gray-500 hover:text-gray-700 focus:outline-none"
-              >
-                {showPassword ? '🙈' : '👁️'}
-              </button>
             </div>
-          </div>
 
-          <button
-            type="submit"
-            className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition"
-          >
-            Login
-          </button>
-        </form>
+            <div>
+              <label className="block text-sm font-medium text-gray-600 mb-1">Password</label>
+              <div className="relative">
+                <input
+                  type={showPassword ? 'text' : 'password'}
+                  required
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none pr-10"
+                  placeholder="Enter your password"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword((prev) => !prev)}
+                  className="absolute inset-y-0 right-3 flex items-center text-lg"
+                >
+                  {showPassword ? '🙈' : '👁️'}
+                </button>
+              </div>
+            </div>
 
-        <p className="text-sm text-center text-gray-600 mt-4">
-          Don’t have an account?{' '}
-          <Link to="/register" className="text-blue-700 hover:underline font-medium">
-            Register
-          </Link>
-        </p>
+            <button
+              type="submit"
+              className="w-full bg-blue-600 text-white py-2.5 rounded-lg hover:bg-blue-700 transition font-medium shadow"
+            >
+              Login
+            </button>
+          </form>
+
+          <p className="text-sm text-center text-gray-600 mt-6">
+            Don’t have an account?{' '}
+            <Link to="/register" className="text-blue-700 font-medium hover:underline">
+              Register here
+            </Link>
+          </p>
+        </div>
       </div>
     </div>
   );

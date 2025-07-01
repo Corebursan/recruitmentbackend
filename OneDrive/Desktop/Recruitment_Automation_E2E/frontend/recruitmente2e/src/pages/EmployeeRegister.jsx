@@ -13,7 +13,12 @@ const EmployeeRegister = () => {
   const handleRegister = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post('/auth/employee/register', { name, email, empId, password });
+      const res = await axios.post('/auth/employee/register', {
+        name,
+        email,
+        empId,
+        password,
+      });
       alert(res.data);
       navigate('/employee/employee-login');
     } catch (err) {
@@ -22,20 +27,87 @@ const EmployeeRegister = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-green-100">
-      <div className="bg-white p-8 rounded shadow-md max-w-md w-full">
-        <h2 className="text-2xl font-bold mb-4">Employee Register</h2>
-        <form onSubmit={handleRegister} className="space-y-4">
-          <input type="text" value={name} onChange={e => setName(e.target.value)} required placeholder="Name" className="w-full border p-2 rounded" />
-          <input type="email" value={email} onChange={e => setEmail(e.target.value)} required placeholder="Email" className="w-full border p-2 rounded" />
-          <input type="text" value={empId} onChange={e => setEmpId(e.target.value)} required placeholder="Employee ID" className="w-full border p-2 rounded" />
-          <div className="relative">
-            <input type={showPassword ? 'text' : 'password'} value={password} onChange={e => setPassword(e.target.value)} required placeholder="Password" className="w-full border p-2 rounded pr-10" />
-            <button type="button" onClick={() => setShowPassword(prev => !prev)} className="absolute right-2 top-2">{showPassword ? '🙈' : '👁️'}</button>
-          </div>
-          <button type="submit" className="w-full bg-green-600 text-white p-2 rounded">Register</button>
-        </form>
-        <p className="mt-4 text-sm text-center">Already have an account? <Link to="/employee/employee-login" className="text-green-700 font-medium">Login</Link></p>
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-green-500 via-emerald-600 to-teal-700 px-4 py-12">
+      <div className="bg-white shadow-xl rounded-3xl overflow-hidden w-full max-w-md">
+        <div className="bg-green-700 text-white py-6 px-6 text-center">
+          <h2 className="text-3xl font-extrabold mb-1">Employer Registration</h2>
+          <p className="text-sm text-green-100">Create your account and start hiring smarter</p>
+        </div>
+
+        <div className="p-8">
+          <form onSubmit={handleRegister} className="space-y-5">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Name</label>
+              <input
+                type="text"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                required
+                placeholder="Enter your name"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 outline-none"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+                placeholder="Enter your email"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 outline-none"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Employee ID</label>
+              <input
+                type="text"
+                value={empId}
+                onChange={(e) => setEmpId(e.target.value)}
+                required
+                placeholder="Enter your employee ID"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 outline-none"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Password</label>
+              <div className="relative">
+                <input
+                  type={showPassword ? 'text' : 'password'}
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                  placeholder="Enter your password"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 outline-none pr-10"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword((prev) => !prev)}
+                  className="absolute inset-y-0 right-3 flex items-center text-lg"
+                >
+                  {showPassword ? '🙈' : '👁️'}
+                </button>
+              </div>
+            </div>
+
+            <button
+              type="submit"
+              className="w-full bg-green-600 text-white py-2.5 rounded-lg hover:bg-green-700 transition font-medium shadow"
+            >
+              Register
+            </button>
+          </form>
+
+          <p className="text-sm text-center text-gray-600 mt-6">
+            Already have an account?{' '}
+            <Link to="/employee/employee-login" className="text-green-700 hover:underline font-medium">
+              Login here
+            </Link>
+          </p>
+        </div>
       </div>
     </div>
   );

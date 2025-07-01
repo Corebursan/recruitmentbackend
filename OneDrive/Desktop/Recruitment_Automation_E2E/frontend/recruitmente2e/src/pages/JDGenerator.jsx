@@ -1,52 +1,72 @@
 import { useState } from 'react';
 
 const JDGenerator = () => {
-  const [manualJD, setManualJD] = useState('');
+  const [jobTitle, setJobTitle] = useState('');
+  const [generatedJD, setGeneratedJD] = useState('');
+  const [customJD, setCustomJD] = useState('');
+  const [isGenerated, setIsGenerated] = useState(false);
 
-  const handleGenerateJD = (e) => {
-    e.preventDefault();
-    alert("✅ JD submitted! We'll parse it soon.");
+ const handleGenerate = async (e) => {
+  e.preventDefault();
+  try {
+    const res = await axios.get(`/api/jd/generate?title=${jobTitle}`);
+    setGeneratedJD(res.data);
+    setCustomJD(res.data);
+    setIsGenerated(true);
+  } catch (err) {
+    console.error('❌ Error generating JD:', err);
+    alert('Failed to generate JD. Try again later.');
+  }
+};
+
+
+  const handleSubmitJD = () => {
+    alert('✅ JD submitted:\n\n' + customJD);
+    setIsGenerated(false);
+    setJobTitle('');
+    setGeneratedJD('');
+    setCustomJD('');
   };
 
   return (
-    <div className="max-w-7xl mx-auto py-10 px-4 space-y-14">
-      {/* Title */}
-      <h2 className="text-4xl font-extrabold text-center text-blue-700">JD Generator Portal</h2>
+    <div className="max-w-4xl mx-auto px-4 py-10 space-y-10">
+      <h2 className="text-4xl font-bold text-center text-indigo-700">🧾 Auto JD Generator</h2>
 
-      
-      {/* Manual Intake */}
-      <div className="bg-white p-8 rounded-xl shadow-lg">
-        <h3 className="text-2xl font-semibold text-blue-600 mb-4">Paste JD (Manual Intake)</h3>
-        <form onSubmit={handleGenerateJD} className="space-y-4">
+      <form onSubmit={handleGenerate} className="space-y-4">
+        <input
+          type="text"
+          placeholder="Enter Job Title (e.g. Frontend Developer)"
+          value={jobTitle}
+          onChange={(e) => setJobTitle(e.target.value)}
+          className="w-full px-4 py-3 border border-gray-300 rounded-lg shadow focus:ring-2 focus:ring-indigo-500 outline-none"
+          required
+        />
+        <button
+          type="submit"
+          className="bg-indigo-600 text-white px-6 py-2 rounded hover:bg-indigo-700 transition"
+        >
+          Generate JD
+        </button>
+      </form>
+
+      {isGenerated && (
+        <div className="space-y-4">
+          <h3 className="text-xl font-semibold text-gray-700">✍️ Editable Job Description:</h3>
           <textarea
-            value={manualJD}
-            onChange={(e) => setManualJD(e.target.value)}
-            rows={8}
-            placeholder="e.g., We are hiring a Frontend Developer with React experience..."
-            className="w-full border border-gray-300 rounded-md p-4 focus:ring-2 focus:ring-blue-500 outline-none"
-            required
+            rows={12}
+            value={customJD}
+            onChange={(e) => setCustomJD(e.target.value)}
+            className="w-full p-4 border border-gray-300 rounded-lg shadow focus:ring-2 focus:ring-blue-500"
           />
-          <button
-            type="submit"
-            className="bg-blue-700 text-white px-6 py-2 rounded hover:bg-blue-800 transition"
-          >
-            Submit JD for Processing
-          </button>
-        </form>
-      </div>
 
-      {/* Vision / Coming Soon */}
-      <div className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-xl p-6 shadow-lg">
-        <h4 className="text-xl font-semibold mb-3">🚀 What’s Next?</h4>
-        <ul className="list-disc pl-5 space-y-2 text-blue-100">
-          <li>📩 JD intake via client portal or email parsing</li>
-          <li>🧠 Automatic extraction of title, skills, experience, and location</li>
-          <li>⚙️ Integration with LLMs to generate and improve job descriptions</li>
-        </ul>
-        <p className="mt-4 text-sm text-blue-200 italic">
-          Want to collaborate or test JD parsing? Contact us!
-        </p>
-      </div>
+          <button
+            onClick={handleSubmitJD}
+            className="bg-green-600 text-white px-6 py-2 rounded hover:bg-green-700 transition"
+          >
+            Submit JD
+          </button>
+        </div>
+      )}
     </div>
   );
 };

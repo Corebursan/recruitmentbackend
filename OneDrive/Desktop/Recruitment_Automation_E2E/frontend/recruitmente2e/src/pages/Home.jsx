@@ -1,9 +1,10 @@
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from '../api/axiosInstance'; // ✅ Fixed path
-import AddJob from './Addjob';
-import JDGenerator from './JDGenerator';
-import Dashboard from './Dashboard';
+import axios from '../api/axiosInstance';
+
+import Profile from './Profile';
+import MyApplications from './MyApplications';
+import JobList from './JobList'; // ✅ This now shows Job Cards
 
 const Home = () => {
   const [user, setUser] = useState(null);
@@ -11,9 +12,14 @@ const Home = () => {
   const scrollRef = useRef(null);
   const navigate = useNavigate();
 
+  // ✅ On login, default to Job Cards (JobList)
   useEffect(() => {
-    axios.get('/auth/user/current-user', { withCredentials: true })
-      .then((res) => setUser(res.data))
+    axios
+      .get('/auth/user/current-user', { withCredentials: true })
+      .then((res) => {
+        setUser(res.data);
+        setActiveSection('jobcards'); // Show JobList by default
+      })
       .catch(() => navigate('/login'));
   }, [navigate]);
 
@@ -33,38 +39,40 @@ const Home = () => {
 
   return (
     <section className="min-h-[80vh] px-4 pb-10">
-      {/* Header */}
+      {/* Header Section */}
       <div className="flex flex-col justify-center items-center text-center py-12">
         <div className="bg-gradient-to-br from-blue-600 to-indigo-700 text-white rounded-3xl shadow-lg p-10 max-w-3xl w-full">
           <h1 className="text-4xl font-extrabold mb-4">Welcome, {user.name} 👋</h1>
           <p className="text-lg text-blue-100 mb-6">
             You’ve successfully logged into <span className="font-semibold">Recruitment_E2E</span>.
-            Automate your hiring process — from job intake to resume matching.
+            Track your applications and manage your profile below.
           </p>
 
           <div className="flex flex-col md:flex-row justify-center gap-4">
             <button
-              onClick={() => handleOpenSection('add')}
+              onClick={() => handleOpenSection('profile')}
               className="bg-white text-blue-700 font-semibold px-6 py-3 rounded-full shadow-md hover:bg-blue-100 transition"
             >
-              ➕ Add New Job
+              👤 My Profile
+            </button>
+            
+            <button
+              onClick={() => handleOpenSection('applications')}
+              className="bg-white text-blue-700 font-semibold px-6 py-3 rounded-full shadow-md hover:bg-blue-100 transition"
+            >
+              📄 My Applications
             </button>
             <button
-              onClick={() => handleOpenSection('jd')}
+              onClick={() => handleOpenSection('jobcards')}
               className="bg-white text-blue-700 font-semibold px-6 py-3 rounded-full shadow-md hover:bg-blue-100 transition"
             >
-              🧾 Generate JD
-            </button>
-            <button
-              onClick={() => handleOpenSection('dashboard')}
-              className="bg-white text-blue-700 font-semibold px-6 py-3 rounded-full shadow-md hover:bg-blue-100 transition"
-            >
-              📊 Dashboard
+              🗂️ Job Cards
             </button>
           </div>
         </div>
       </div>
 
+      {/* Dynamic Content Section */}
       {activeSection && (
         <div
           ref={scrollRef}
@@ -78,9 +86,10 @@ const Home = () => {
             ✕
           </button>
 
-          {activeSection === 'add' && <AddJob />}
-          {activeSection === 'jd' && <JDGenerator />}
-          {activeSection === 'dashboard' && <Dashboard />}
+          {activeSection === 'profile' && <Profile />}
+                  
+          {activeSection === 'applications' && <MyApplications />}
+          {activeSection === 'jobcards' && <JobList />}       {/* ✅ Reused JobList for Cards */}
         </div>
       )}
     </section>
